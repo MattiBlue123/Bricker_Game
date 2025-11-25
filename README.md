@@ -1,4 +1,5 @@
 **# Bricker_Game**
+// authors: Amit and Zohar 
 An Object-Oriented implementation of an Arkanoid-style arcade game featuring dynamic brick strategies, power-ups, and design patterns. Built with the DanoGameLab engine.
 
 Bricker is a breakout-style arcade game developed as an Object-Oriented Programming exercise. The project is built using the DanoGameLab game engine (v1.1.0). The game challenges players to break bricks using a ball and paddle while preventing the ball from falling off the screen.
