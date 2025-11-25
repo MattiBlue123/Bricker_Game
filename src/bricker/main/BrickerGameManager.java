@@ -1,7 +1,9 @@
 package bricker.main;
 
 import brick_strategies.BasicCollisionStrategy;
+import brick_strategies.BricksStrategyFactory;
 import brick_strategies.CollisionStrategy;
+import brick_strategies.StrategiesFactory;
 import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.Layer;
@@ -90,9 +92,17 @@ public class BrickerGameManager extends GameManager {
         createPaddle(imageReader,windowController, inputListener);
         createWall(imageReader,windowController);
         createBackground(imageReader, windowController);
-        createBricker(imageReader,windowController,new BasicCollisionStrategy(this.gameObjects(),
-                this.brickCounter,windowDimensions));
+        createBricker(imageReader,new BricksStrategyFactory( // TODO: check correct
+                this.gameObjects(),
+                imageReader,
+                soundReader,
+                brickCounter,
+                windowDimensions,
+                BALL_SIZE
+        ).getStrategy());
         createLives(imageReader);
+        StrategiesFactory.resetStrategies();
+
     }
 
     @Override
@@ -191,7 +201,7 @@ public class BrickerGameManager extends GameManager {
 
     }
 
-    private void createBricker(ImageReader imageReader, WindowController windowController, CollisionStrategy collisionStrategy) {
+    private void createBricker(ImageReader imageReader, CollisionStrategy collisionStrategy) {
         this.bricksGrid= new Brick[brickRows][brickColumns]; //TODO- ADDED
 
         float brickWidth=(WINDOW_WIDTH-(BRICK_PADDING*(brickColumns+1))-LEFT_WALL_WIDTH-RIGHT_WALL_WIDTH) / this.brickColumns;

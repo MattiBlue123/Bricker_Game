@@ -65,6 +65,10 @@ public class ExtraPaddle extends Paddle {
         collisionCounter++;
         if (collisionCounter >= MAX_COLLISIONS) {
             gameObjects.removeGameObject(this, Layer.DEFAULT);
+            activeExtraPaddles--;
         }
+    }
+    public static void resetCounter() {
+        activeExtraPaddles = 0;
     }
 }

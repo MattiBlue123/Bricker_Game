@@ -24,11 +24,13 @@ public class PuckStrategy extends BasicCollisionStrategy{
     private final ImageRenderable puckImage;
     private final Sound collisionSound;
     private final float puckSize;
+    private final Vector2 windowDimensions;
 
 
     public PuckStrategy(GameObjectCollection gameObjects, ImageReader imageReader, SoundReader soundReader,
-                        Counter brickCounter,Vector2 windowDimensions, float puckSize, Puck[] puckList) {
-        super(gameObjects, brickCounter,windowDimensions);
+                        Counter brickCounter,Vector2 windowDimensions, float puckSize) {
+        super(gameObjects, brickCounter);
+        this.windowDimensions=windowDimensions;
         this.puckImage = imageReader.readImage(PUCK_IMAGE, true);
         this.collisionSound = soundReader.readSound(PUCK_SOUND);
         this.puckSize = puckSize * PUCK_RATIO_OF_BALL;
@@ -45,16 +47,16 @@ public class PuckStrategy extends BasicCollisionStrategy{
         Vector2 topLeftOfPuck = brickCenter.subtract(puckDimensions.mult(0.5f));
 
         for (int i = 0; i < 2; i++) {
-            Puck puck = addPuck(topLeftOfPuck,puckDimensions);
+            addPuck(topLeftOfPuck,puckDimensions);
         }
     }
 
-    private Puck addPuck(Vector2 topLeftOfPuck,Vector2 puckDimensions) {
+    private void addPuck(Vector2 topLeftOfPuck,Vector2 puckDimensions) {
 
-        Puck puck = new Puck(topLeftOfPuck, puckDimensions,this.puckImage,this.collisionSound);
+        Puck puck = new Puck(topLeftOfPuck, puckDimensions,this.puckImage,this.collisionSound,
+                windowDimensions,gameObjects);
         puck.setVelocity(randomVelocityUpper());
         super.gameObjects.addGameObject(puck, Layer.DEFAULT);
-        return puck;
     }
 
     private Vector2 randomVelocityUpper(){

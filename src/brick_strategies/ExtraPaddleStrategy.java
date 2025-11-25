@@ -1,5 +1,6 @@
 package brick_strategies;
 
+import danogl.util.Counter;
 import gameobjects.ExtraPaddle;
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
@@ -8,7 +9,7 @@ import danogl.gui.UserInputListener;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
-public class ExtraPaddleStrategy implements CollisionStrategy {
+public class ExtraPaddleStrategy extends BasicCollisionStrategy  {
 
     private final GameObjectCollection gameObjects;
     private final ImageReader imageReader;
@@ -16,9 +17,12 @@ public class ExtraPaddleStrategy implements CollisionStrategy {
     private final Vector2 windowDimensions;
 
     public ExtraPaddleStrategy(GameObjectCollection gameObjects,
+                               Counter brickCounter,
                                ImageReader imageReader,
                                UserInputListener inputListener,
                                Vector2 windowDimensions) {
+
+        super(gameObjects, brickCounter);
         this.gameObjects = gameObjects;
         this.imageReader = imageReader;
         this.inputListener = inputListener;
@@ -43,5 +47,9 @@ public class ExtraPaddleStrategy implements CollisionStrategy {
                 inputListener,
                 windowDimensions.x()
         );
+    }
+
+    public static void resetCounter() {
+        ExtraPaddle.resetCounter();
     }
 }

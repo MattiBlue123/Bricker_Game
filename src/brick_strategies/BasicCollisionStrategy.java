@@ -11,13 +11,10 @@ import danogl.util.Vector2;
 public class BasicCollisionStrategy implements CollisionStrategy {
     protected final GameObjectCollection gameObjects;
     private final Counter brickCounter;
-    protected final Vector2 windowDimensions;
 
-    public BasicCollisionStrategy(GameObjectCollection gameObjects, Counter brickCounter,
-                                  Vector2 windowDimensions) {
+    public BasicCollisionStrategy(GameObjectCollection gameObjects, Counter brickCounter) {
         this.gameObjects = gameObjects;
         this.brickCounter = brickCounter;
-        this.windowDimensions = windowDimensions;
     }
 
     @Override
