@@ -38,8 +38,7 @@ public class ExtraPaddle extends Paddle {
     public static void createExtraPaddle(GameObjectCollection gameObjects,
                                          Vector2 windowDimensions,
                                          Renderable image,
-                                         UserInputListener inputListener,
-                                         float windowWidth) {
+                                         UserInputListener inputListener) {
 
         // Check if one already exists
         if (activeExtraPaddles > 0) {
@@ -51,10 +50,11 @@ public class ExtraPaddle extends Paddle {
         Vector2 location = new Vector2(windowDimensions.x() / 2, windowDimensions.y() / 2);
 
         ExtraPaddle extraPaddle = new ExtraPaddle(location, paddleSize, image,
-                inputListener, windowWidth, gameObjects);
+                inputListener, windowDimensions.x(), gameObjects);
 
         extraPaddle.setCenter(location);
         gameObjects.addGameObject(extraPaddle, Layer.DEFAULT);
+        activeExtraPaddles = 1;
     }
 
     //  remove itself after 4 collisions
@@ -65,7 +65,8 @@ public class ExtraPaddle extends Paddle {
         collisionCounter++;
         if (collisionCounter >= MAX_COLLISIONS) {
             gameObjects.removeGameObject(this, Layer.DEFAULT);
-            activeExtraPaddles--;
+            collisionCounter = 0; // TODO: is this needed?
+            activeExtraPaddles = 0;
         }
     }
     public static void resetCounter() {

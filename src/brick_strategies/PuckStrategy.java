@@ -10,7 +10,6 @@ import danogl.gui.rendering.ImageRenderable;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Counter;
 import danogl.util.Vector2;
-import gameobjects.Ball;
 import gameobjects.Puck;
 
 import java.util.Random;
@@ -21,7 +20,7 @@ public class PuckStrategy extends BasicCollisionStrategy{
     private static final float PUCK_RATIO_OF_BALL= 0.75f ;
     private static final float PUCK_SPEED= 200f;
 
-    private final ImageRenderable puckImage;
+    private final Renderable puckImage;
     private final Sound collisionSound;
     private final float puckSize;
     private final Vector2 windowDimensions;

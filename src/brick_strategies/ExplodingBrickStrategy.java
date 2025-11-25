@@ -32,8 +32,8 @@ public class ExplodingBrickStrategy extends BasicCollisionStrategy {
         if (!(thisObj instanceof Brick)) return; //TODO IM NOT SURE IF THATS OK, BUT FOR SAFTEY
 
         Vector2 brickCoordinates = ((Brick) thisObj).getBrickCoordinateInBricksGrid();
-        int row = (int) brickCoordinates.y();
-        int col = (int) brickCoordinates.x();
+        int row = (int) brickCoordinates.x();
+        int col = (int) brickCoordinates.y();
 
 
         //mark that our brick is exploded
@@ -57,7 +57,7 @@ public class ExplodingBrickStrategy extends BasicCollisionStrategy {
         }
     }
 
-        private Boolean isValidCoordinate ( int row, int col){
+        private boolean isValidCoordinate ( int row, int col){
             return row >= 0 && row < bricksGrid.length && col >= 0 && col < bricksGrid[0].length;
         }
     }

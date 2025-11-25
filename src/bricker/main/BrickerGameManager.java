@@ -3,7 +3,7 @@ package bricker.main;
 import brick_strategies.BasicCollisionStrategy;
 import brick_strategies.BricksStrategyFactory;
 import brick_strategies.CollisionStrategy;
-import brick_strategies.StrategiesFactory;
+import brick_strategies.BricksStrategyFactory;
 import danogl.GameManager;
 import danogl.GameObject;
 import danogl.collisions.Layer;
@@ -18,6 +18,7 @@ import gameobjects.LivesManager;
 import gameobjects.Paddle;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.sql.SQLOutput;
 import java.util.Random;
 
 public class BrickerGameManager extends GameManager {
@@ -92,16 +93,9 @@ public class BrickerGameManager extends GameManager {
         createPaddle(imageReader,windowController, inputListener);
         createWall(imageReader,windowController);
         createBackground(imageReader, windowController);
-        createBricker(imageReader,new BricksStrategyFactory( // TODO: check correct
-                this.gameObjects(),
-                imageReader,
-                soundReader,
-                brickCounter,
-                windowDimensions,
-                BALL_SIZE
-        ).getStrategy());
+        createBricker(imageReader, soundReader);
         createLives(imageReader);
-        StrategiesFactory.resetStrategies();
+        BricksStrategyFactory.resetStrategies();
 
     }
 
@@ -197,11 +191,11 @@ public class BrickerGameManager extends GameManager {
         Vector2 windowDimensions = windowController.getWindowDimensions();
         GameObject background = new GameObject(Vector2.ZERO, windowDimensions, backgroundImage);
         this.gameObjects().addGameObject(background, Layer.BACKGROUND); // Add with the lowest layer to ensure it's behind everything
-//        background.setCoordinateSpace(CoordinateSpace.CAMERA_COORDINATES);
+
 
     }
 
-    private void createBricker(ImageReader imageReader, CollisionStrategy collisionStrategy) {
+    private void createBricker(ImageReader imageReader, SoundReader soundReader) {
         this.bricksGrid= new Brick[brickRows][brickColumns]; //TODO- ADDED
 
         float brickWidth=(WINDOW_WIDTH-(BRICK_PADDING*(brickColumns+1))-LEFT_WALL_WIDTH-RIGHT_WALL_WIDTH) / this.brickColumns;
@@ -210,6 +204,9 @@ public class BrickerGameManager extends GameManager {
 
         for (int i = 0; i < brickRows; i++) {
             for (int j = 0; j < brickColumns; j++) {
+                CollisionStrategy collisionStrategy = new BricksStrategyFactory(this.gameObjects(),
+                        this.brickCounter,
+                        imageReader,soundReader,inputListener,windowDimensions,BALL_SIZE, bricksGrid).getStrategy();
                 float x = (j * brickWidth)+(BRICK_PADDING*(j+1))+LEFT_WALL_WIDTH;
                 float y = (i *BRICK_HEIGHT)+(BRICK_PADDING*(i+1)+ TOP_WALL_HEIGHT);
                 Vector2 brickPosition= new Vector2(x,y);
