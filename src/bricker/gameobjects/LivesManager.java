@@ -59,7 +59,9 @@ public class LivesManager {
      * @param topLeftCorner The top-left corner position where the lives GUI will be displayed.
      * @param imageReader   The ImageReader instance used to load the heart image.
      */
-    public LivesManager(GameObjectCollection gameObjects, Vector2 topLeftCorner, ImageReader imageReader) {
+    public LivesManager(GameObjectCollection gameObjects,
+                        Vector2 topLeftCorner,
+                        ImageReader imageReader) {
         {
             this.gameObjects = gameObjects;
             livesLeft = INITIAL_LIVES;
@@ -76,13 +78,15 @@ public class LivesManager {
 
             gameObjects.addGameObject(remainingLivesText, Layer.UI);
 
-            Renderable heartImage = imageReader.readImage(GameConstants.HEART_IMAGE_PATH,true);
+            Renderable heartImage =
+                    imageReader.readImage(GameConstants.HEART_IMAGE_PATH, true);
 
             // creating hearts enough for max lives, but adding only the initial lives to the game
             // from here we set the hearts gui of the remaining lives
             for (int i = 0; i < MAX_LIVES; i++) {
                 Vector2 heartPos =
-                        topLeftCorner.add(new Vector2((i + 1) * (GameConstants.HEART_WIDTH + HEARTS_GAP), 0));
+                        topLeftCorner.add(new Vector2((i + 1) *
+                                (GameConstants.HEART_WIDTH + HEARTS_GAP), 0));
 
                 GameObject heart = new GameObject(
                         heartPos,
@@ -99,7 +103,8 @@ public class LivesManager {
 
     /**
      * Updates the textual representation of remaining lives on the GUI.
-     * Changes the text color based on the number of lives left - according to predefined thresholds.
+     * Changes the text color based on the number of lives left -
+     * according to predefined thresholds.
      */
     private void updateLivesText() {
         // here we are updating the string that's showing on the gui
@@ -116,7 +121,7 @@ public class LivesManager {
     }
 
     /**
-     * Removes a life from the player, called when the ball hits the "ground" (bottom of the screen).
+     * Removes a life from the player, called when the ball hits the "ground".
      * Updates the GUI by removing the last heart added and updating the textual representation.
      * Ensures that lives do not go below zero to avoid out of bounds errors.
      */
@@ -139,14 +144,13 @@ public class LivesManager {
         if (livesLeft >= MAX_LIVES) {
             return;
         }
-        // accessing the point in the hearts array that corresponds to the current life that was added
+        // accessing index in the hearts array that corresponds to the current life that was added
         // It's working due to livesLeft being a 1-based counter that
         GameObject heartToAdd = heartsArray[livesLeft];
         gameObjects.addGameObject(heartToAdd, Layer.UI);
         livesLeft++;
         updateLivesText();
     }
-
 
 
     /**

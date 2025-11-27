@@ -13,6 +13,7 @@ import danogl.util.Vector2;
  * A class representing an extra paddle in the game.
  * Extends the Paddle class and includes collision handling to remove itself after a set number of collisions.
  * Ensures that only one extra paddle exists at a time.
+ *
  * @author Amit Tzur and Zohar Mattatia
  */
 public class ExtraPaddle extends Paddle {
@@ -32,30 +33,34 @@ public class ExtraPaddle extends Paddle {
     private final GameObjectCollection gameObjects;
 
 
-    /** Constructor for the ExtraPaddle class.
-     *  Overloaded to include GameObjectCollection for removal upon reaching max collisions.
-     *  Works only through the static createExtraPaddle method to ensure single instance.
+    /**
+     * Constructor for the ExtraPaddle class.
+     * Overloaded to include GameObjectCollection for removal upon reaching max collisions.
+     * Works only through the static createExtraPaddle method to ensure single instance.
      *
-     * @param topLeftCorner  The top-left corner of the paddle.
-     * @param dimensions     The dimensions of the paddle.
-     * @param renderable     The renderable object for the paddle.
-     * @param inputListener  The user input listener.
-     * @param gameObjects    The collection of game objects in the game.
+     * @param topLeftCorner The top-left corner of the paddle.
+     * @param dimensions    The dimensions of the paddle.
+     * @param renderable    The renderable object for the paddle.
+     * @param inputListener The user input listener.
+     * @param gameObjects   The collection of game objects in the game.
      */
-    private ExtraPaddle(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable,
+    private ExtraPaddle(Vector2 topLeftCorner,
+                        Vector2 dimensions,
+                        Renderable renderable,
                         UserInputListener inputListener,
                         GameObjectCollection gameObjects) {
         super(topLeftCorner, renderable, inputListener);
         this.gameObjects = gameObjects;
     }
 
-    /** Static method to create and add an extra paddle to the game.
-     *  Ensures that only one extra paddle exists at a time.
+    /**
+     * Static method to create and add an extra paddle to the game.
+     * Ensures that only one extra paddle exists at a time.
      *
-     * @param gameObjects    The collection of game objects in the game.
+     * @param gameObjects      The collection of game objects in the game.
      * @param windowDimensions The dimensions of the game window.
-     * @param image          The renderable image for the paddle.
-     * @param inputListener  The user input listener.
+     * @param image            The renderable image for the paddle.
+     * @param inputListener    The user input listener.
      */
     public static void createExtraPaddle(GameObjectCollection gameObjects,
                                          Vector2 windowDimensions,
@@ -80,9 +85,10 @@ public class ExtraPaddle extends Paddle {
         activeExtraPaddles++;
     }
 
-    /** Handles collision events.
-     *  Increments the collision counter and removes the paddle after reaching the maximum allowed collisions.
-     *  Overrides the onCollisionEnter method from Paddle.
+    /**
+     * Handles collision events.
+     * Increments the collision counter and removes the paddle after reaching the maximum allowed collisions.
+     * Overrides the onCollisionEnter method from Paddle.
      *
      * @param other     The other game object involved in the collision.
      * @param collision The collision information.
@@ -92,7 +98,7 @@ public class ExtraPaddle extends Paddle {
         super.onCollisionEnter(other, collision);
 
         // only count collisions with the ball (the puck also has the BALL_TAG)
-        if(other.getTag().equals(GameConstants.BALL_TAG)){
+        if (other.getTag().equals(GameConstants.BALL_TAG)) {
             collisionCounter++;
         }
         // remove the extra paddle after reaching max collisions
@@ -103,8 +109,9 @@ public class ExtraPaddle extends Paddle {
         }
     }
 
-    /** Resets the static counter for active extra paddles.
-     *  Useful for testing purposes to ensure a clean state.
+    /**
+     * Resets the static counter for active extra paddles.
+     * Useful for testing purposes to ensure a clean state.
      */
     public static void resetCounter() {
         activeExtraPaddles = 0;

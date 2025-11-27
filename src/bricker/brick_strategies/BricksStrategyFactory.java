@@ -14,6 +14,7 @@ import java.util.Random;
  * Factory class to generate different brick collision strategies.
  * This class randomly selects and returns a collision strategy
  * based on the provided sample space.
+ *
  * @author Amit Tzur and Zohar Mattatia
  */
 public class BricksStrategyFactory {
@@ -49,6 +50,7 @@ public class BricksStrategyFactory {
     private final LivesManager livesManager;
     /* random number generator for strategy selection */
     private static final Random RANDOM = new Random();
+
     /**
      * Constructor for BricksStrategyFactory.
      *
@@ -73,7 +75,7 @@ public class BricksStrategyFactory {
         this.soundReader = soundReader;
         this.inputListener = inputListener;
         this.bricksGrid = bricksGrid;
-        this.livesManager=livesManager;
+        this.livesManager = livesManager;
     }
 
     /**
@@ -102,8 +104,8 @@ public class BricksStrategyFactory {
             case EXPLODE_STRATEGY_INDEX -> // 3. Exploding
                     new ExplodingBrickStrategy(gameObjects, brickCounter, bricksGrid, soundReader);
 
-             case LIVES_STRATEGY_INDEX -> // 4. Extra Life
-                    new RecoverLifeStrategy(gameObjects, brickCounter, imageReader,livesManager);
+            case LIVES_STRATEGY_INDEX -> // 4. Extra Life
+                    new RecoverLifeStrategy(gameObjects, brickCounter, imageReader, livesManager);
 
             case DOUBLE_STRATEGY_INDEX -> // 5. Double Strategy
                     new DoubleStrategy(gameObjects, brickCounter, imageReader, soundReader,

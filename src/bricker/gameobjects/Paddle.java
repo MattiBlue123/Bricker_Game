@@ -31,7 +31,9 @@ public class Paddle extends GameObject {
      * @param renderable    The visual representation of the paddle.
      * @param inputListener The user input listener for handling user inputs.
      */
-    public Paddle(Vector2 topLeftCorner, Renderable renderable, UserInputListener inputListener) {
+    public Paddle(Vector2 topLeftCorner,
+                  Renderable renderable,
+                  UserInputListener inputListener) {
         super(topLeftCorner, GameConstants.PADDLE_DIMENSIONS, renderable);
         this.inputListener = inputListener;
     }
@@ -47,14 +49,14 @@ public class Paddle extends GameObject {
         super.update(deltaTime);
         Vector2 movementDir = Vector2.ZERO;
         // if left key is pressed, add left direction
-        if(inputListener.isKeyPressed(KeyEvent.VK_LEFT)){
+        if (inputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
             movementDir = movementDir.add(Vector2.LEFT);
         }
 
         // if right key is pressed, add right direction
         // since they are in opposite directions, they will cancel out if both are pressed
         // so that handles this behavior naturally
-        if (inputListener.isKeyPressed(KeyEvent.VK_RIGHT)){
+        if (inputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
             movementDir = movementDir.add(Vector2.RIGHT);
         }
         // set the velocity according to the movement direction and speed
@@ -63,10 +65,12 @@ public class Paddle extends GameObject {
         // check if we reached the left or right edge of the window
         boolean didReachLeftEdge = (this.getTopLeftCorner().x() <= 0);
         boolean didReachRightEdge =
-                (this.getTopLeftCorner().x() >= GameConstants.WINDOW_WIDTH - this.getDimensions().x());
+                (this.getTopLeftCorner().x() >=
+                        GameConstants.WINDOW_WIDTH - this.getDimensions().x());
 
         // if we did, and we are still moving in that direction, stop the movement
-        if (didReachLeftEdge && movementDir.x() < 0  || didReachRightEdge && movementDir.x()>0){
+        if (didReachLeftEdge && movementDir.x() < 0 ||
+                didReachRightEdge && movementDir.x() > 0) {
             setVelocity(Vector2.ZERO);
         }
     }

@@ -11,6 +11,7 @@ import danogl.util.Vector2;
  * A class representing a falling heart in the game.
  * Extends the GameObject class and includes collision handling to grant an extra life to the player.
  * The heart falls down the screen and can be collected by the main paddle.
+ *
  * @author Amit Tzur and Zohar Mattatia
  */
 public class FallingHeart extends GameObject {
@@ -78,7 +79,7 @@ public class FallingHeart extends GameObject {
     public void update(float deltaTime) {
         super.update(deltaTime);
         // If the heart falls below the screen, remove it from the game
-        if (this.getTopLeftCorner().y() > GameConstants.WINDOW_DIMENSIONS.y() ) {
+        if (this.getTopLeftCorner().y() > GameConstants.WINDOW_DIMENSIONS.y()) {
             gameObjects.removeGameObject(this);
         }
     }

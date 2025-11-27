@@ -8,6 +8,7 @@ import danogl.util.Counter;
 /**
  * A basic collision strategy that removes the brick from the game upon collision.
  * Extends the CollisionStrategy interface.
+ *
  * @author Amit Tzur and Zohar Mattatia
  */
 public class BasicCollisionStrategy implements CollisionStrategy {
@@ -16,7 +17,8 @@ public class BasicCollisionStrategy implements CollisionStrategy {
 
     /**
      * Constructor for BasicCollisionStrategy.
-     * @param gameObjects The collection of game objects in the game.
+     *
+     * @param gameObjects  The collection of game objects in the game.
      * @param brickCounter A counter tracking the number of bricks remaining.
      */
     public BasicCollisionStrategy(GameObjectCollection gameObjects, Counter brickCounter) {
@@ -27,7 +29,8 @@ public class BasicCollisionStrategy implements CollisionStrategy {
     /**
      * Handles the collision event by removing the firstObject from the game
      * and decrementing the firstObject counter.
-     * @param firstObject The firstObject game object that was collided with.
+     *
+     * @param firstObject  The firstObject game object that was collided with.
      * @param secondObject The other game object involved in the collision.
      */
     @Override

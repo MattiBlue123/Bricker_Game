@@ -1,91 +1,154 @@
 zohar_matt,amit_tzur1
 206978793,314634387
 
-3.5.4.1 - Design Choice: Strategy Pattern.
-To handle the removal of bricks, we chose to implement the Strategy Design Pattern. Instead of implementing the removal logic directly inside the Brick class, the Brick holds a reference to a CollisionStrategy interface. When a collision occurs, the brick delegates the logic to its strategy object via the onCollision method. The default behavior is handled by BasicCollisionStrategy, which accesses the gameObjects to remove the brick and updates the global brick counter.
+3.5.4.1 -
+Design Choice: Strategy Pattern.
+To handle the removal of bricks, we chose to implement the Strategy Design Pattern.
+Instead of implementing the removal logic directly inside the Brick class,
+the Brick holds a reference to a CollisionStrategy interface.
+When a collision occurs, the brick delegates the logic to its strategy object via the onCollision method.
+The default behavior is handled by BasicCollisionStrategy,
+which accesses the gameObjects to remove the brick and updates the global brick counter.
 
 Advantages:
-1. Open/Closed Principle: This is the primary advantage. It allowed us to easily extend the game from part 1 to in Part 2 (adding explosions, extra paddles, etc.) by simply creating new classes that implement CollisionStrategy, without having to modify the existing Brick class code.
+1. Open/Closed Principle: This is the primary advantage.
+It allowed us to easily extend the game from part 1 to in Part 2 (adding explosions, extra paddles, etc.) by
+simply creating new classes that implement CollisionStrategy, without having to modify the existing Brick
+class code.
 
-2. Single Responsibility Principle and Modularity: The Brick class is focused only on representing the game object (position, image, physics), while the game logic for "what happens upon breakage" is put into separate strategy classes. It prevents the Brick class from becoming too big and filled with complex if-else or switch statements handling every possible game event.
+2. Single Responsibility Principle and Modularity: The Brick class is focused only on representing the game
+object (position, image, physics), while the game logic for "what happens upon breakage" is put into separate
+strategy classes. It prevents the Brick class from becoming too big and filled with complex if-else or switch
+statements handling every possible game event.
 
 Disadvantages:
-1. Class Explosion: This design required creating multiple files and classes (interface, base strategy, specific strategies, factory) for logic that could have been written possibly in fewer lines of code inside the Brick class.
+1. Class Explosion: This design required creating multiple files and classes (interface, base strategy,
+specific strategies, factory) for logic that could have been written possibly in fewer lines of code inside
+the Brick class.
 
-2. Dependency Management: The strategies require access to game internals (like gameObjects, LivesManager, Counter). This forced the passing of many dependencies from the BrickerGameManager through the BricksStrategyFactory into the strategies - since we did not want to pass BrickerGameManager as is.
+2. Dependency Management: The strategies require access to game internals (like gameObjects, LivesManager,
+Counter). This forced the passing of many dependencies from the BrickerGameManager through the
+BricksStrategyFactory into the strategies - since we did not want to pass BrickerGameManager as is.
 
 
-3.5.4.2 - Implementation of Life Count Display (Graphic and Numeric): To manage the player's life count, we created a dedicated class called LivesManager. This class is responsible for both the logical tracking of lives and the visual representation (GUI) on the screen.
+3.5.4.2 -
+Implementation of Life Count Display (Graphic and Numeric): To manage the player's life count, we created a
+dedicated class called LivesManager. This class is responsible for both the logical tracking of lives and the
+visual representation (GUI) on the screen.
 
-Graphic Display: The class maintains an array of GameObjects representing the hearts. In the constructor, we made enough heart objects for the maximum possible lives (4) but only add the initial amount (3) to the Layer.UI. When a life is lost (removeLife), the rightmost heart is removed from the game layer. When a life is gained (gainLife), a heart is added back to the layer at the appropriate position - only if we don't have the maximum amount of lives we could have.
+Graphic Display: The class maintains an array of GameObjects representing the hearts. In the constructor, we
+made enough heart objects for the maximum possible lives (4) but only add the initial amount (3) to the
+Layer.UI. When a life is lost (removeLife), the rightmost heart is removed from the game layer. When a life
+is gained (gainLife), a heart is added back to the layer at the appropriate position - only if we don't have
+the maximum amount of lives we could have.
 
-Numeric Display: we used a TextRenderable object to display the numerical value. This object is updated whenever the life count changes. Additionally, we implemented logic to change the text color based on the status: Green for 3+ lives, Yellow for 2 lives, and Red for 1 life, providing immediate visual feedback to the player - according to the instructions.
+Numeric Display: we used a TextRenderable object to display the numerical value. This object is updated
+whenever the life count changes. Additionally, we implemented logic to change the text color based on the
+status: Green for 3+ lives, Yellow for 2 lives, and Red for 1 life, providing immediate visual feedback to
+the player - according to the instructions.
 
 3.5.4.3 -
-
 Implementation of Special Behaviors
 
 1. Additional Balls Puck Strategy:
+Implementation: The PuckStrategy calculates the center position of the broken brick and spawns two Puck
+objects there, by calling the Puck class creator. It assigns them a random upward velocity.
 
-Implementation: The PuckStrategy calculates the center position of the broken brick and spawns two Puck objects there, by calling the Puck class creator. It assigns them a random upward velocity.
-
-Additional New Class - Puck: This class extends Ball. Its primary role is to override the update method to detect when it falls below the screen boundaries. Unlike the main ball, which resets when lost, the Puck removes itself from the gameObjects afterwards.
+Additional New Class - Puck: This class extends Ball. Its primary role is to override the update method to
+detect when it falls below the screen boundaries. Unlike the main ball, which resets when lost, the Puck
+removes itself from the gameObjects afterwards.
 
 
 2. Extra Paddle:
-
-Implementation: The ExtraPaddleStrategy delegates the creation logic to the ExtraPaddle class itself in "createExtraPaddle". This static factory method ensures that the logic for limiting the number of paddles remains encapsulated within the paddle class. Its still holding to the principals we discussed before, because instead of calling the constructor of ExtraPaddle - it makes sure if it need to do that at all, first. We put it all inside ExtraPaddle class to avoid code complexity - although it could have been implemented in ExtraPaddleStrategy as well.
+Implementation: The ExtraPaddleStrategy delegates the creation logic to the ExtraPaddle class itself in
+"createExtraPaddle". This static factory method ensures that the logic for limiting the number of paddles
+remains encapsulated within the paddle class. Its still holding to the principals we discussed before,
+because instead of calling the constructor of ExtraPaddle - it makes sure if it need to do that at all,
+first. We put it all inside ExtraPaddle class to avoid code complexity - although it could have been
+implemented in ExtraPaddleStrategy as well.
 
 New Class - ExtraPaddle: This class extends Paddle. It serves two main roles:
 
-Singleton-like Limit: It uses a static counter to ensure only one extra paddle exists at any given time. If an extra paddle is already active, the creation request is ignored.
+Singleton-like Limit: It uses a static counter to ensure only one extra paddle exists at any given time. If
+an extra paddle is already active, the creation request is ignored.
 
-Extra-paddle life span control: It tracks the number of collisions with the ball and removes itself from the game after 4 hits.
+Extra-paddle life span control: It tracks the number of collisions with the ball and removes itself from the
+game after 4 hits.
 
 3. Exploding Brick:
+Implementation: The ExplodingBrickStrategy holds a reference to the main bricksGrid. Upon collision, it first
+removes the current brick and then iterates through its immediate neighbors (up, down, left, right). For each
+existing neighbor, it recursively triggers their onCollisionEnter method. To prevent infinite recursion and
+stack overflow in a cluster of exploding bricks, we marked the current brick as processed (null) in the grid
+before triggering neighbors.
 
-Implementation: The ExplodingBrickStrategy holds a reference to the main bricksGrid. Upon collision, it first removes the current brick and then iterates through its immediate neighbors (up, down, left, right). For each existing neighbor, it recursively triggers their onCollisionEnter method. To prevent infinite recursion and stack overflow in a cluster of exploding bricks, we marked the current brick as processed (null) in the grid before triggering neighbors.
-
-
-New Classes: No specific game object class was added for this, but the Brick class API was extended to include getBrickCoordinateInBricksGrid() to allow the strategy to locate neighbors - according to instructions. More about that, later.
+New Classes: No specific game object class was added for this, but the Brick class API was extended to
+include getBrickCoordinateInBricksGrid() to allow the strategy to locate neighbors - according to
+instructions. More about that, later.
 
 4. Recover Life (Falling Heart):
+Implementation: The RecoverLifeStrategy instantiates a FallingHeart object at the position of the broken
+brick and adds it to the game.
 
-Implementation: The RecoverLifeStrategy instantiates a FallingHeart object at the position of the broken brick and adds it to the game.
-
-New Class - FallingHeart: This class extends GameObject. It is responsible for moving straight down and detecting collisions. we overrode the shouldCollideWith method to ensure the heart ignores all objects (bricks, balls, walls) except for the Main Paddle, using the TAG option provided by danogl. Upon a valid collision, it calls livesManager.gainLife() and removes itself. It also removes itself if it falls out of the screen bounds.
+New Class - FallingHeart: This class extends GameObject. It is responsible for moving straight down and
+detecting collisions. we overrode the shouldCollideWith method to ensure the heart ignores all objects
+(bricks, balls, walls) except for the Main Paddle, using the TAG option provided by danogl. Upon a valid
+collision, it calls livesManager.gainLife() and removes itself. It also removes itself if it falls out of the
+screen bounds.
 
 3.5.4.4 -
-
 Double Behavior Implementation
+Design and Implementation: We used the Composite Design Pattern. The DoubleStrategy class implements
+CollisionStrategy but holds an array of other CollisionStrategy objects. When onCollision is triggered, it
+creates this array and insert strategies into it, using the strategies factory - thats the Composition part.
+Then, it iterates through this array and executes onCollision for each strategy stored within it. This avoids
+code duplication and uses other classes in a "has-a" manner.
 
-Design and Implementation: We used the Composite Design Pattern. The DoubleStrategy class implements CollisionStrategy but holds an array of other CollisionStrategy objects. When onCollision is triggered, it creates this array and insert strategies into it, using the strategies factory - thats the Composition part. Then, it iterates through this array and executes onCollision for each strategy stored within it. This avoids code duplication and uses other classes in a "has-a" manner.
+Limiting Behaviors to 3: To adhere to the requirement of a up to 3 special behaviors (and prevent infinite
+recursion), we implemented a depth-limiting mechanism:
 
-Limiting Behaviors to 3: To adhere to the requirement of a up to 3 special behaviors (and prevent infinite recursion), we implemented a depth-limiting mechanism:
+Counter: The DoubleStrategy constructor accepts an integer doubleStrategyCounter. The BricksStrategyFactory
+initializes the first Double Strategy with a counter of 1.
 
-Counter: The DoubleStrategy constructor accepts an integer doubleStrategyCounter. The BricksStrategyFactory initializes the first Double Strategy with a counter of 1.
+Factory Coordination: When the DoubleStrategy populates its array of sub-strategies, it requests new
+strategies from the BricksStrategyFactory.
 
-Factory Coordination: When the DoubleStrategy populates its array of sub-strategies, it requests new strategies from the BricksStrategyFactory.
+Stopping Condition: Before requesting a new strategy, I check if doubleStrategyCounter has reached the
+maximum allowed depth (MAX_DOUBLE_STRATEGIES).
 
-Stopping Condition: Before requesting a new strategy, I check if doubleStrategyCounter has reached the maximum allowed depth (MAX_DOUBLE_STRATEGIES).
+If the limit is reached, we request a strategy from the factory using a specific flag
+(EXCLUDE_DOUBLE_AND_BASIC) that forces it to return only special strategies (Puck, Explosion, etc.) while
+prevents it from generating another DoubleStrategy.
 
-If the limit is reached, we request a strategy from the factory using a specific flag (EXCLUDE_DOUBLE_AND_BASIC) that forces it to return only special strategies (Puck, Explosion, etc.) while prevents it from generating another DoubleStrategy.
-
-If the limit is not reached, we pass the incremented counter (doubleStrategyCounter + 1) to any new DoubleStrategy created, ensuring the recursion eventually terminates
+If the limit is not reached, we pass the incremented counter (doubleStrategyCounter + 1) to any new
+DoubleStrategy created, ensuring the recursion eventually terminates
 
 3.5.4.5 -
+In Part 2, I extended the original API to support new behaviors while adhering to the OOP principles we
+learned. The following public classes were added:
 
-In Part 2, I extended the original API to support new behaviors while adhering to the OOP principles we learned. The following public classes were added:
+bricker.gameobjects.Puck: Added to represent the extra balls. It extends Ball but overrides the update method
+to implement unique cleanup logic. This separates the "temporary" nature of pucks from the main ball logic.
+Other than that they share code.
 
-bricker.gameobjects.Puck: Added to represent the extra balls. It extends Ball but overrides the update method to implement unique cleanup logic. This separates the "temporary" nature of pucks from the main ball logic. Other than that they share code.
+bricker.gameobjects.ExtraPaddle: Added to represent the secondary paddle. It extends Paddle and adds logic
+for tracking collision counts. We had to add it to use the existing code in Paddle but adhear to the
+additional requirments we were instructed to implement.
 
-bricker.gameobjects.ExtraPaddle: Added to represent the secondary paddle. It extends Paddle and adds logic for tracking collision counts. We had to add it to use the existing code in Paddle but adhear to the additional requirments we were instructed to implement.
+bricker.gameobjects.FallingHeart: Added to represent the life drop. It is required to implement specific
+physics (falling straight down) and unique collision logic (ignoring everything except the main paddle),
+which differs from other existing game objects.
 
-bricker.gameobjects.FallingHeart: Added to represent the life drop. It is required to implement specific physics (falling straight down) and unique collision logic (ignoring everything except the main paddle), which differs from other existing game objects.
+brick_strategies.BricksStrategyFactory: Added to centralize the responsibility of selecting and creating
+strategies (including probability logic). This implements the Factory Design Pattern, decoupling the
+"creation" logic from the "game loop" logic in BrickerGameManager.
 
-brick_strategies.BricksStrategyFactory: Added to centralize the responsibility of selecting and creating strategies (including probability logic). This implements the Factory Design Pattern, decoupling the "creation" logic from the "game loop" logic in BrickerGameManager.
+brick_strategies.PuckStrategy / ExtraPaddleStrategy / RecoverLifeStrategy: These strategy classes were added
+to implement the specific special behaviors. They implement the CollisionStrategy interface, allowing the
+game to be extended with new features without modifying the Brick class - following the Open Close
+Prinsipal.
 
-brick_strategies.PuckStrategy / ExtraPaddleStrategy / RecoverLifeStrategy: These strategy classes were added to implement the specific special behaviors. They implement the CollisionStrategy interface, allowing the game to be extended with new features without modifying the Brick class - following the Open Close Prinsipal.
-
-brick_strategies.DoubleStrategy: Added to implement the Composite Pattern for double behaviors. It is necessary to hold and manage multiple strategies simultaneously and handle the recursion limit logic (max 3 behaviors), which could not be cleanly handled within the Factory alone.
+brick_strategies.DoubleStrategy: Added to implement the Composite Pattern for double behaviors. It is
+necessary to hold and manage multiple strategies simultaneously and handle the recursion limit logic (max 3
+behaviors), which could not be cleanly handled within the Factory alone.
 

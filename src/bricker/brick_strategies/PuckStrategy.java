@@ -17,6 +17,7 @@ import java.util.Random;
 /**
  * A collision strategy that spawns pucks upon brick collision.
  * Extends the BasicCollisionStrategy.
+ *
  * @author Zohar Mattatia and Amit Tzur
  */
 public class PuckStrategy extends BasicCollisionStrategy implements CollisionStrategy {
@@ -24,7 +25,7 @@ public class PuckStrategy extends BasicCollisionStrategy implements CollisionStr
     /* Path to the puck image asset */
     private static final String PUCK_IMAGE = "assets/mockBall.png";
     /* Size of the puck */
-    private static final float PUCK_SIZE = GameConstants.BALL_SIZE*0.75f;
+    private static final float PUCK_SIZE = GameConstants.BALL_SIZE * 0.75f;
     /* Number of pucks to spawn upon collision */
     private static final int NUMBER_OF_PUCKS = 2;
 
@@ -39,10 +40,10 @@ public class PuckStrategy extends BasicCollisionStrategy implements CollisionStr
      * Constructor for PuckStrategy.
      * Here we initialize the puck image, collision sound, and puck size.
      *
-     * @param gameObjects The collection of game objects in the game.
+     * @param gameObjects  The collection of game objects in the game.
      * @param brickCounter Counter to keep track of remaining bricks.
-     * @param imageReader ImageReader for loading images.
-     * @param soundReader SoundReader for loading sounds.
+     * @param imageReader  ImageReader for loading images.
+     * @param soundReader  SoundReader for loading sounds.
      */
     public PuckStrategy(GameObjectCollection gameObjects,
                         Counter brickCounter,
@@ -56,8 +57,8 @@ public class PuckStrategy extends BasicCollisionStrategy implements CollisionStr
     /**
      * Handles the collision event by spawning pucks at the brick's location.
      *
-     * @param firstObject The brick game object that was collided with.
-     * @param secondObject  The other game object involved in the collision.
+     * @param firstObject  The brick game object that was collided with.
+     * @param secondObject The other game object involved in the collision.
      */
     @Override
     public void onCollision(GameObject firstObject, GameObject secondObject) {
@@ -65,7 +66,8 @@ public class PuckStrategy extends BasicCollisionStrategy implements CollisionStr
 
         Vector2 brickCenter = firstObject.getCenter();
         Vector2 puckDimensions = new Vector2(PUCK_SIZE, PUCK_SIZE);
-        Vector2 topLeftOfPuck = brickCenter.subtract(puckDimensions.mult(GameConstants.HALF_FACTOR));
+        Vector2 topLeftOfPuck =
+                brickCenter.subtract(puckDimensions.mult(GameConstants.HALF_FACTOR));
 
         for (int i = 0; i < NUMBER_OF_PUCKS; i++) {
             addPuck(topLeftOfPuck);
@@ -79,7 +81,7 @@ public class PuckStrategy extends BasicCollisionStrategy implements CollisionStr
      */
     private void addPuck(Vector2 topLeftOfPuck) {
 
-        Puck puck = new Puck(topLeftOfPuck,puckImage,collisionSound,gameObjects);
+        Puck puck = new Puck(topLeftOfPuck, puckImage, collisionSound, gameObjects);
         puck.setVelocity(randomVelocityUpper());
         super.gameObjects.addGameObject(puck, Layer.DEFAULT);
     }
@@ -89,12 +91,12 @@ public class PuckStrategy extends BasicCollisionStrategy implements CollisionStr
      *
      * @return A Vector2 representing the random velocity.
      */
-    private Vector2 randomVelocityUpper(){
+    private Vector2 randomVelocityUpper() {
         Random random = new Random();
         double angle = random.nextDouble() * Math.PI;
         // Calculate velocity components based on the angle, which should be upwards
-        float velocityX = (float)Math.cos(angle) * GameConstants.BALL_SPEED;
-        float velocityY = (float)Math.sin(angle) * GameConstants.BALL_SPEED;
+        float velocityX = (float) Math.cos(angle) * GameConstants.BALL_SPEED;
+        float velocityY = (float) Math.sin(angle) * GameConstants.BALL_SPEED;
         // Math.sin(angle) in our range (0..π) is non-negative,
         // so we must negate the Y component to make the puck go up
         return new Vector2(velocityX, -velocityY);

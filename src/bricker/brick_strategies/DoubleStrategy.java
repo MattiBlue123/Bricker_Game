@@ -54,15 +54,16 @@ public class DoubleStrategy extends BasicCollisionStrategy implements CollisionS
     /**
      * Constructor for DoubleStrategy.
      * All of these parameters are needed to create new strategies within the double strategy,
-     * using the BricksStrategyFactory - which requires all of them to run all the different strategies.
+     * using the BricksStrategyFactory -
+     * which requires all of them to run all the different strategies.
      *
-     * @param gameObjects          The collection of game objects in the game.
-     * @param brickCounter         Counter to keep track of remaining bricks.
-     * @param imageReader          ImageReader for loading images.
-     * @param soundReader          SoundReader for loading sounds.
-     * @param inputListener        UserInputListener for handling user inputs.
-     * @param bricksGrid           2D array representing the grid of bricks.
-     * @param livesManager         LivesManager to manage player's lives.
+     * @param gameObjects           The collection of game objects in the game.
+     * @param brickCounter          Counter to keep track of remaining bricks.
+     * @param imageReader           ImageReader for loading images.
+     * @param soundReader           SoundReader for loading sounds.
+     * @param inputListener         UserInputListener for handling user inputs.
+     * @param bricksGrid            2D array representing the grid of bricks.
+     * @param livesManager          LivesManager to manage player's lives.
      * @param doubleStrategyCounter Counter for the number of double strategies applied.
      */
     public DoubleStrategy(GameObjectCollection gameObjects,
@@ -106,8 +107,8 @@ public class DoubleStrategy extends BasicCollisionStrategy implements CollisionS
      * double strategy counter.
      * Overrides the onCollision method from BasicCollisionStrategy.
      *
-     * @param firstObject The brick game object that was collided with.
-     * @param secondObject  The other game object involved in the collision.
+     * @param firstObject  The brick game object that was collided with.
+     * @param secondObject The other game object involved in the collision.
      */
     @Override
     public void onCollision(GameObject firstObject, GameObject secondObject) {

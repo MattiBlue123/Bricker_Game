@@ -12,6 +12,7 @@ import bricker.gameobjects.Brick;
  * A collision strategy that causes a brick to explode,
  * affecting its neighboring bricks upon collision.
  * Extends the BasicCollisionStrategy.
+ *
  * @author Amit Tzur and Zohar Mattatia
  */
 public class ExplodingBrickStrategy extends BasicCollisionStrategy implements CollisionStrategy {
@@ -28,15 +29,15 @@ public class ExplodingBrickStrategy extends BasicCollisionStrategy implements Co
      * Constructor for ExplodingBrickStrategy.
      * Here we initialize the explosion sound and the bricks grid.
      *
-     * @param gameObjects The collection of game objects in the game.
+     * @param gameObjects  The collection of game objects in the game.
      * @param brickCounter Counter to keep track of remaining bricks.
-     * @param bricksGrid 2D array representing the grid of bricks.
-     * @param soundReader SoundReader for loading sounds.
+     * @param bricksGrid   2D array representing the grid of bricks.
+     * @param soundReader  SoundReader for loading sounds.
      */
     ExplodingBrickStrategy(GameObjectCollection gameObjects,
                            Counter brickCounter,
                            Brick[][] bricksGrid,
-                            SoundReader soundReader) {
+                           SoundReader soundReader) {
 
         super(gameObjects, brickCounter);
         this.explosionSound = soundReader.readSound(EXPLOSION_SOUND);
@@ -47,8 +48,8 @@ public class ExplodingBrickStrategy extends BasicCollisionStrategy implements Co
      * Handles the collision event by causing the brick to explode,
      * affecting its neighboring bricks.
      *
-     * @param firstObject The brick game object that was collided with.
-     * @param secondObject  The other game object involved in the collision.
+     * @param firstObject  The brick game object that was collided with.
+     * @param secondObject The other game object involved in the collision.
      */
     @Override
     public void onCollision(GameObject firstObject, GameObject secondObject) {
@@ -56,7 +57,8 @@ public class ExplodingBrickStrategy extends BasicCollisionStrategy implements Co
         super.onCollision(firstObject, secondObject);
         explosionSound.play();
 
-        // handling neighboring bricks explosion - THIS IS ACCORDING TO THE ASSIGNMENT DESCRIPTION
+        // handling neighboring bricks explosion -
+        // THIS IS ACCORDING TO THE ASSIGNMENT DESCRIPTION
         if (!(firstObject instanceof Brick)) return;
 
         // get the brick's coordinates in the grid
@@ -89,11 +91,12 @@ public class ExplodingBrickStrategy extends BasicCollisionStrategy implements Co
 
     /**
      * Helper method to check if the given coordinates are valid in the bricks grid.
+     *
      * @param row The row index to check.
      * @param col The column index to check.
      * @return True if the coordinates are valid, false otherwise.
      */
-    private boolean isValidCoordinate ( int row, int col){
+    private boolean isValidCoordinate(int row, int col) {
         return row >= 0 && row < bricksGrid.length && col >= 0 && col < bricksGrid[0].length;
     }
 }

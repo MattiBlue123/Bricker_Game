@@ -138,7 +138,7 @@ public class BrickerGameManager extends GameManager {
         this.windowDimensions = windowController.getWindowDimensions();
         this.brickCounter = new Counter(brickRows * brickColumns);
 
-        createBall(imageReader,soundReader);
+        createBall(imageReader, soundReader);
         createPaddle(imageReader, inputListener);
         createWall();
         createBackground(imageReader);
@@ -180,8 +180,7 @@ public class BrickerGameManager extends GameManager {
             if (currentLives > 0) {
                 ball.setCenter(windowDimensions.mult(GameConstants.HALF_FACTOR));
                 setRandomBallVelocity(ball);
-            }
-            else {
+            } else {
                 prompt = YOU_LOSE;
             }
         }
@@ -192,9 +191,9 @@ public class BrickerGameManager extends GameManager {
         }
 
         // handling the dialog yes/no window
-        if(!prompt.isEmpty()) {
+        if (!prompt.isEmpty()) {
             prompt += PLAY_AGAIN;
-            if(windowController.openYesNoDialog(prompt))
+            if (windowController.openYesNoDialog(prompt))
                 windowController.resetGame();
             else
                 windowController.closeWindow();
@@ -205,19 +204,19 @@ public class BrickerGameManager extends GameManager {
      * Creates the ball game object, sets its initial position and velocity,
      * and adds it to the game object collection.
      *
-     * @param imageReader      ImageReader for loading images
-     * @param soundReader      SoundReader for loading sounds
+     * @param imageReader ImageReader for loading images
+     * @param soundReader SoundReader for loading sounds
      */
     private void createBall(ImageReader imageReader,
-                            SoundReader soundReader){
+                            SoundReader soundReader) {
         // creating ball
         // isTopLeft above defines if we want the left top pixel to be in same color of window
-        Renderable ballImage = imageReader.readImage(BALL_IMAGE_PATH,true);
+        Renderable ballImage = imageReader.readImage(BALL_IMAGE_PATH, true);
         Sound collisionSound = soundReader.readSound(GameConstants.BALL_COLLISION_SOUND);
         GameObject ball = new Ball(Vector2.ZERO, ballImage, collisionSound);
         ball.setVelocity(Vector2.DOWN.mult(GameConstants.BALL_SPEED)); // Down is (0,1)
         ball.setCenter(windowDimensions.mult(GameConstants.HALF_FACTOR));
-        this.gameObjects().addGameObject(ball,Layer.DEFAULT);
+        this.gameObjects().addGameObject(ball, Layer.DEFAULT);
         this.ball = (Ball) ball;
         setRandomBallVelocity(this.ball);
 
@@ -227,21 +226,21 @@ public class BrickerGameManager extends GameManager {
      * Creates the paddle game object, sets its initial position,
      * and adds it to the game object collection.
      *
-     * @param imageReader      ImageReader for loading images
-     * @param inputListener    UserInputListener for handling player input
+     * @param imageReader   ImageReader for loading images
+     * @param inputListener UserInputListener for handling player input
      */
     private void createPaddle(ImageReader imageReader,
-                              UserInputListener inputListener){
+                              UserInputListener inputListener) {
         // initializing local variables
-        Renderable paddleImage= imageReader.readImage(GameConstants.PADDLE_IMAGE,true);
+        Renderable paddleImage = imageReader.readImage(GameConstants.PADDLE_IMAGE, true);
         // creating the main paddle object - the user's paddle
         Paddle mainPaddle = new Paddle(Vector2.ZERO,
                 paddleImage,
                 inputListener);
-        mainPaddle.setCenter(new Vector2(windowDimensions.x()*GameConstants.HALF_FACTOR ,
-                windowDimensions.y()-PADDLE_OFFSET_FROM_BOTTOM));
+        mainPaddle.setCenter(new Vector2(windowDimensions.x() * GameConstants.HALF_FACTOR,
+                windowDimensions.y() - PADDLE_OFFSET_FROM_BOTTOM));
         mainPaddle.setTag(GameConstants.MAIN_PADDLE_TAG);
-        this.gameObjects().addGameObject(mainPaddle,Layer.DEFAULT);
+        this.gameObjects().addGameObject(mainPaddle, Layer.DEFAULT);
 
     }
 
@@ -249,16 +248,16 @@ public class BrickerGameManager extends GameManager {
      * Creates the walls (left, right, top) game objects and adds them to the game object collection.
      * The walls are represented as dark gray rectangles.
      */
-    private void createWall(){
+    private void createWall() {
         for (int i = 0; i < WALL_POSITIONS.length; i++) {
             float x = WALL_POSITIONS[i].x();
             float y = WALL_POSITIONS[i].y();
             float width = WALLS_DIMENSIONS[i][0];
             float height = WALLS_DIMENSIONS[i][1];
-            GameObject wall = new GameObject(new Vector2(x,y),
+            GameObject wall = new GameObject(new Vector2(x, y),
                     new Vector2(width, height),
                     new RectangleRenderable(Color.DARK_GRAY));
-            this.gameObjects().addGameObject(wall,Layer.STATIC_OBJECTS);
+            this.gameObjects().addGameObject(wall, Layer.STATIC_OBJECTS);
         }
     }
 
@@ -293,8 +292,8 @@ public class BrickerGameManager extends GameManager {
         float spaceForBricks = windowSize - totalPadding - totalWalls;
         float brickWidth = spaceForBricks / this.brickColumns;
 
-        Renderable brickerImage = imageReader.readImage(BRICK_IMAGE_PATH,false);
-        Vector2 brickDimensions = new Vector2(brickWidth,BRICK_HEIGHT);
+        Renderable brickerImage = imageReader.readImage(BRICK_IMAGE_PATH, false);
+        Vector2 brickDimensions = new Vector2(brickWidth, BRICK_HEIGHT);
 
         // for each brick in the grid, create it and add it to the game
         for (int i = 0; i < brickRows; i++) {
@@ -309,14 +308,14 @@ public class BrickerGameManager extends GameManager {
                         this.livesManager).getStrategy(STRATEGY_SAMPLE_SPACE);
 
                 // calculating brick position according to its row and column
-                float x = (j * brickWidth) + (GameConstants.STANDARD_PADDING * (j+1)) + LEFT_WALL_WIDTH;
-                float y = (i * BRICK_HEIGHT) + (GameConstants.STANDARD_PADDING * (i+1) + TOP_WALL_HEIGHT);
-                Vector2 brickPosition = new Vector2(x,y);
+                float x = (j * brickWidth) + (GameConstants.STANDARD_PADDING * (j + 1)) + LEFT_WALL_WIDTH;
+                float y = (i * BRICK_HEIGHT) + (GameConstants.STANDARD_PADDING * (i + 1) + TOP_WALL_HEIGHT);
+                Vector2 brickPosition = new Vector2(x, y);
 
-                Brick brick = new Brick(brickPosition,brickDimensions,brickerImage,collisionStrategy,
-                        new Vector2(i,j));
+                Brick brick = new Brick(brickPosition, brickDimensions, brickerImage, collisionStrategy,
+                        new Vector2(i, j));
                 bricksGrid[i][j] = brick;
-                this.gameObjects().addGameObject(brick,Layer.STATIC_OBJECTS);
+                this.gameObjects().addGameObject(brick, Layer.STATIC_OBJECTS);
 
             }
         }
@@ -329,7 +328,7 @@ public class BrickerGameManager extends GameManager {
      * @param imageReader ImageReader for loading images
      */
     private void createLives(ImageReader imageReader) {
-        this.livesManager = new LivesManager(this.gameObjects(), LIVES_POSITION,imageReader);
+        this.livesManager = new LivesManager(this.gameObjects(), LIVES_POSITION, imageReader);
     }
 
 
@@ -344,7 +343,7 @@ public class BrickerGameManager extends GameManager {
     private static int[] validateArgs(String[] args) {
         int columns = DEFAULT_BRICK_COLUMNS;
         int rows = DEFAULT_BRICK_ROWS;
-        if (args.length >= 2){
+        if (args.length >= 2) {
             columns = Integer.parseInt(args[0]);
             rows = Integer.parseInt(args[1]);
         }
@@ -362,11 +361,11 @@ public class BrickerGameManager extends GameManager {
         Random rand = new Random();
         // randomly choosing the direction of the ball's velocity
         // Inverting the velocity component with 50% probability for both x and y
-        if (rand.nextBoolean()){
-            ballVelX *=-1;
+        if (rand.nextBoolean()) {
+            ballVelX *= -1;
         }
-        if(rand.nextBoolean()){
-            ballVelY *=-1;
+        if (rand.nextBoolean()) {
+            ballVelY *= -1;
         }
         ball.setVelocity((new Vector2((float) ballVelX, (float) ballVelY)));
     }
@@ -383,7 +382,7 @@ public class BrickerGameManager extends GameManager {
         int rows = BrickerGameManager.validateArgs(args)[1];
         BrickerGameManager game = new BrickerGameManager(BOUNCING_BALL,
                 GameConstants.WINDOW_DIMENSIONS,
-                columns,rows);
+                columns, rows);
         game.run();
 
     }

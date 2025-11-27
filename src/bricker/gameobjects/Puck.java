@@ -9,6 +9,7 @@ import danogl.util.Vector2;
 /**
  * A class representing a puck in the game.
  * Extends the Ball class and includes behavior to remove itself when it goes out of bounds.
+ *
  * @author Amit Tzur and Zohar Mattatia
  */
 public class Puck extends Ball {
@@ -23,10 +24,10 @@ public class Puck extends Ball {
     /**
      * Constructor for Puck.
      *
-     * @param topLeftCorner The top-left corner position of the puck.
-     * @param renderable    The visual representation of the puck.
+     * @param topLeftCorner  The top-left corner position of the puck.
+     * @param renderable     The visual representation of the puck.
      * @param collisionSound The sound effect to play upon collision.
-     * @param gameObjects   The collection of game objects in the game.
+     * @param gameObjects    The collection of game objects in the game.
      */
     public Puck(Vector2 topLeftCorner,
                 Renderable renderable,
@@ -48,9 +49,9 @@ public class Puck extends Ball {
      * @param deltaTime The time elapsed since the last update.
      */
     @Override
-    public void update(float deltaTime){
+    public void update(float deltaTime) {
         super.update(deltaTime);
-        if (getCenter().y() > windowDimensions.y() + puckDimensions.y()){
+        if (getCenter().y() > windowDimensions.y() + puckDimensions.y()) {
             gameObjects.removeGameObject(this);
         }
     }

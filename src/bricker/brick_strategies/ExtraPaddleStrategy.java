@@ -13,6 +13,7 @@ import bricker.gameobjects.ExtraPaddle;
 /**
  * A collision strategy that adds an extra paddle to the game upon brick collision.
  * Extends the BasicCollisionStrategy.
+ *
  * @author Zohar Mattatia and Amit Tzur
  */
 public class ExtraPaddleStrategy extends BasicCollisionStrategy implements CollisionStrategy {
@@ -49,8 +50,8 @@ public class ExtraPaddleStrategy extends BasicCollisionStrategy implements Colli
     /**
      * Handles the collision event by adding an extra paddle to the game.
      *
-     * @param firstObject The brick game object that was collided with.
-     * @param secondObject  The other game object involved in the collision.
+     * @param firstObject  The brick game object that was collided with.
+     * @param secondObject The other game object involved in the collision.
      */
     @Override
     public void onCollision(GameObject firstObject, GameObject secondObject) {

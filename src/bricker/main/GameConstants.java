@@ -6,6 +6,7 @@ import danogl.util.Vector2;
  * A class containing constant values used throughout the game.
  * Only constants that are used in multiple classes were placed here.
  * This includes asset paths, game object dimensions, tags, and other configuration values.
+ *
  * @author Amit Tzur and Zohar Mattatia
  */
 public class GameConstants {
@@ -51,8 +52,6 @@ public class GameConstants {
     public static final Vector2 BALL_DIMENSIONS = new Vector2(BALL_SIZE, BALL_SIZE);
     /* paddle dimensions vector - width and height */
     public static final Vector2 PADDLE_DIMENSIONS = new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT);
-
-
 
 
 }
